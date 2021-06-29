@@ -9,7 +9,7 @@ export const fetchAllPostsAsync = createAsyncThunk(
         const { data } = await api.fetchPosts();
         return data;
       } catch (error) {
-        return error.message;
+        throw(error);
       }
   }
 );
@@ -39,23 +39,11 @@ export const postSlice = createSlice({
             state.error = '';
         },
         [fetchAllPostsAsync.rejected] : (state, action) => {
-            console.log(action)
             state.fetching = false;
-            state.error = action.payload;
+            state.error = action.error.message;
             state.posts = [];
         }
     }
-    
-    // (builder) => {
-    //     builder
-    //         .addCase(fetchAllPostsAsync.pending, (state) => {
-    //             state.fetching = true;
-    //         })
-    //         .addCase(fetchAllPostsAsync.fulfilled, (state, action) => {
-    //             state.fetching = false;
-    //             state.posts = action.payload
-    //         }) 
-    // }
 });
 
 export default postSlice.reducer;
