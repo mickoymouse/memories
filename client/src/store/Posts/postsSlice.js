@@ -14,6 +14,19 @@ export const fetchAllPostsAsync = createAsyncThunk(
   }
 );
 
+export const createPostAsync = createAsyncThunk(
+  "posts/createPost",
+  async (post) => {
+    try {
+      console.log("POST: ", post);
+      const { data } = await api.createPosts(post);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 const initialState = {
   fetching: false,
   error: "",
@@ -23,11 +36,7 @@ const initialState = {
 export const postSlice = createSlice({
   name: "Posts",
   initialState,
-  reducers: {
-    fetchAllPosts: (state, action) => {
-      state.posts = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: {
     [fetchAllPostsAsync.pending]: (state) => {
       state.fetching = true;
@@ -42,6 +51,20 @@ export const postSlice = createSlice({
       state.fetching = false;
       state.error = action.error.message;
       state.posts = [];
+    },
+
+    [createPostAsync.pending]: (state) => {
+      state.fetching = true;
+      state.error = "";
+    },
+    [createPostAsync.fulfilled]: (state, action) => {
+      state.fetching = false;
+      state.posts = [...state.posts, action.payload];
+      state.error = "";
+    },
+    [createPostAsync.rejected]: (state, action) => {
+      state.fetching = false;
+      state.error = action.error.message;
     },
   },
 });
