@@ -1,18 +1,21 @@
-import React from 'react';
+import React from "react";
+import { useSelector } from "react-redux";
 
-import Post from './Post/Post';
-import useStyles from './styles';
+import Post from "./Post/Post";
+import useStyles from "./styles";
 
 const Posts = () => {
-    const classes = useStyles();
-    
-    return (
-        <>
-            <h1>Posts</h1>
-            <Post />
-            <Post />
-        </>
-    );
-}
+  const classes = useStyles();
 
-export  default Posts;
+  const posts = useSelector((state) => state.Posts);
+
+  return (
+    <>
+      <h1>Posts</h1>
+      <Post />
+      <Post />
+    </>
+  );
+};
+
+export default Posts;
